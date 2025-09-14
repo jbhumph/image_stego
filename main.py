@@ -35,17 +35,20 @@ def main() -> int:
         if not input_path.exists():
             print(f"Input image not found: {input_path}")
             return 1
-        #message = input("Enter the message to encode: ").strip()
-        #output_path = input("Enter the path to save the output image: ").strip()
-
-        #encoder = Encoder(input_path)
+        message = input("Enter the message to encode: ").strip()
+        outname = input("Enter the path to save the output image: ").strip()
+        if not outname:
+            print("No output path provided.")
+            return 1
+        output_path = images_dir / outname
+        encoder = Encoder(input_path)
         
-        #try:
-            #encoder.encode(message, output_path)
+        try:
+            encoder.encode(message, output_path)
             #print(f"Message successfully encoded and saved to {output_path}")
-        #except Exception as e:
-            #print(f"Error during encoding: {e}")
-            #return 1
+        except Exception as e:
+            print(f"Error during encoding: {e}")
+            return 1
     elif choice == '2':
         print("Choice 2")
         #input_path = input("Enter the path to the image to decode: ").strip()

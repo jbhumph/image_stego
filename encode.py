@@ -11,5 +11,13 @@ class Encoder:
         Embed `message` into the image at self.input_path and write to output_path.
         Raise exceptions on I/O or format errors.
         """
-        # ...existing code...
+        
+        binary_output = self.text_to_binary(message)
+        print(binary_output)
+
         raise NotImplementedError("Implement encoding algorithm here")
+    
+    @staticmethod
+    def text_to_binary(text: str) -> str:
+        binary_string = ''.join(bin(ord(char))[2:].zfill(8) for char in text)
+        return binary_string
