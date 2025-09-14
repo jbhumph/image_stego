@@ -1,5 +1,6 @@
 from encode import Encoder
 from decode import Decoder
+from pathlib import Path
 
 
 def main() -> int:
@@ -15,7 +16,25 @@ def main() -> int:
 
     if choice == '1':
         print("Choice 1")
-        #input_path = input("Enter the path to the input image: ").strip()
+        # Input and validate original file
+        images_dir = Path(__file__).parent / "images"
+        images_dir.mkdir(parents=True, exist_ok=True)
+
+        # ask for filename only (e.g. "A.png"); allow full path too
+        fname = input("Enter image filename (e.g. A.png) or full path: ").strip()
+        if not fname:
+            print("No filename provided.")
+            return 1
+
+        # treat as provided path if it looks like one, otherwise use images_dir
+        if Path(fname).is_absolute() or ("/" in fname or "\\" in fname):
+            input_path = Path(fname)
+        else:
+            input_path = images_dir / fname
+
+        if not input_path.exists():
+            print(f"Input image not found: {input_path}")
+            return 1
         #message = input("Enter the message to encode: ").strip()
         #output_path = input("Enter the path to save the output image: ").strip()
 
