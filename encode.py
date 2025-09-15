@@ -9,7 +9,7 @@ class Encoder:
         self.input_path = input_path
 
     def encode(self, message: str, output_path: str) -> None:
-        binary_output = self.text_to_binary(message)
+        binary_output = self.text_to_binary(message + '\0')
         binary_length = len(binary_output)
 
         img, pixels = self.load_image(self.input_path)
@@ -31,8 +31,6 @@ class Encoder:
         print(binary_output)
         print(f"Length of binary message: {binary_length} bits")
         print("//==============================\\")
-
-        raise NotImplementedError("Implement encoding algorithm here")
     
     def embed_message(self, img: Image, pixels, binary_output: str) -> None:
         bit_index = 0
