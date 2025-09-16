@@ -5,6 +5,7 @@ class Encoder:
     Simple encoder class: responsible for embedding a message into an image.
     Implementation detail (e.g. LSB) goes into encode().
     """
+    
     def __init__(self, input_path: str):
         self.input_path = input_path
 
@@ -24,6 +25,11 @@ class Encoder:
         # Save modified image
         img.save(output_path)
         print(f"Image saved to {output_path}")
+
+        # Load and display modified image
+        modified_img = Image.open(output_path)
+        print("displaying modified image...")
+        modified_img.show()
 
         # Print summary of encoding process
         print("//==============================\\")
@@ -67,6 +73,8 @@ class Encoder:
     def load_image(path: str):
         print("loading image...")
         img = Image.open(path)
+        print("displaying original image...")
+        img.show()
         print("converting to RGB...")
         img = img.convert('RGB')
         print("getting pixel access...")
