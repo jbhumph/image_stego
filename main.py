@@ -1,6 +1,7 @@
 from encode import Encoder
 from decode import Decoder
 from pathlib import Path
+from config import Config
 
 
 def main() -> int:
