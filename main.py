@@ -5,6 +5,8 @@ from config import Config
 
 
 def main() -> int:
+    config = Config("config.json")
+    
     # Write initial splash menu
     print("//==============================\\")
     print("Welcome to the Steganography Tool!")
@@ -42,7 +44,7 @@ def main() -> int:
             print("No output path provided.")
             return 1
         output_path = images_dir / outname
-        encoder = Encoder(input_path)
+        encoder = Encoder(input_path, config)
         
         try:
             encoder.encode(message, output_path)

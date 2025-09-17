@@ -1,19 +1,21 @@
 from PIL import Image
+from config import Config
 
 class Encoder:
     """
     Simple encoder class: responsible for embedding a message into an image.
     Implementation detail (e.g. LSB) goes into encode().
     """
-    
-    def __init__(self, input_path: str):
+
+    def __init__(self, input_path: str, config: Config):
         self.input_path = input_path
+        self.config = config
 
     def encode(self, message: str, output_path: str) -> None:
         binary_output = self.text_to_binary(message + '\0')
         binary_length = len(binary_output)
 
-        img, pixels = self.load_image(self.input_path)
+        img, pixels = self.load_image(self.config, self.input_path)
         
         # Check if image is large enough for message
         if binary_length > img.width * img.height * 3:
@@ -27,9 +29,10 @@ class Encoder:
         print(f"Image saved to {output_path}")
 
         # Load and display modified image
-        modified_img = Image.open(output_path)
-        print("displaying modified image...")
-        modified_img.show()
+        if self.config.get('general', 'show_encoded_preview'):
+            modified_img = Image.open(output_path)
+            print("displaying modified image...")
+            modified_img.show()
 
         # Print summary of encoding process
         print("//==============================\\")
@@ -70,11 +73,12 @@ class Encoder:
         return binary_string
 
     @staticmethod
-    def load_image(path: str):
+    def load_image(config: Config, path: str):
         print("loading image...")
         img = Image.open(path)
-        print("displaying original image...")
-        img.show()
+        if config.get('general', 'show_original_preview'):
+            print("displaying original image...")
+            img.show()
         print("converting to RGB...")
         img = img.convert('RGB')
         print("getting pixel access...")

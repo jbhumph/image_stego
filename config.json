@@ -1,0 +1,54 @@
+{
+    "general": {
+        "verbose_mode": true,
+        "show_original_preview": true,
+        "show_encoded_preview": true,
+        "auto_backup": false,
+        "preserve_metadata": false
+    },
+    "embedding": {
+        "delimiter_type": "null_terminator",
+        "magic_sequence": "1111111100000000",
+        "channels_to_use": [
+            "R",
+            "G",
+            "B"
+        ],
+        "bits_per_channel": 1,
+        "embedding_pattern": "sequential",
+        "skip_pixels": 0,
+        "capacity_warning_threshold": 80
+    },
+    "security": {
+        "encryption_enabled": false,
+        "encryption_algorithm": "AES",
+        "password_hash_algorithm": "SHA256"
+    },
+    "file_handling": {
+        "supported_input_formats": [
+            ".png",
+            ".bmp",
+            ".tiff",
+            ".jpg",
+            ".jpeg"
+        ],
+        "default_output_format": ".png",
+        "compression_level": 6,
+        "max_message_length": 10000,
+        "min_image_size": [
+            100,
+            100
+        ],
+        "output_filename_template": "{original_name}_encoded{extension}"
+    },
+    "validation": {
+        "strict_mode": true,
+        "allow_overwrite": false,
+        "verify_embedding": true
+    },
+    "logging": {
+        "save_logs": false,
+        "log_file": "steganography.log",
+        "log_level": "INFO"
+    }
+}
