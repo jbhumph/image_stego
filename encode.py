@@ -17,6 +17,8 @@ class Encoder:
         elif delimiter_type == 'magic_sequence':
             magic_seq = self.config.get('embedding', 'magic_sequence', '1111111100000000')
             binary_output = self.text_to_binary(message + magic_seq)
+        elif delimiter_type == "none":
+            binary_output = self.text_to_binary(message)
         else:
             length_prefix = len(message)
             binary_output = self.text_to_binary(f"{length_prefix:04d}" + message)
