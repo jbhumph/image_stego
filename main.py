@@ -80,7 +80,7 @@ def main() -> int:
         if not input_path.exists():
             print(f"Input image not found: {input_path}")
             return 1
-        decoder = Decoder(input_path)
+        decoder = Decoder(input_path, config)
         
         try:
             message = decoder.decode()

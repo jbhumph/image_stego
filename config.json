@@ -3,6 +3,7 @@
         "verbose_mode": true,
         "show_original_preview": false,
         "show_encoded_preview": false,
+        "show_decode_preview": true,
         "!!!auto_backup": false,
         "!!!preserve_metadata": false,
         "show_summary": true

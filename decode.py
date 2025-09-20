@@ -1,14 +1,16 @@
 from PIL import Image
+from config import Config
 
 class Decoder:
     """
     Simple decoder class: responsible for extracting a message from an image.
     """
-    def __init__(self, input_path: str):
+    def __init__(self, input_path: str, config: Config):
         self.input_path = input_path
+        self.config = config
 
     def decode(self) -> str:
-        img, pixels = self.load_image(self.input_path)
+        img, pixels = self.load_image(self.config, self.input_path)
 
         extracted_bits = []
         for y in range(img.height):
@@ -35,12 +37,20 @@ class Decoder:
 
     
     @staticmethod
-    def load_image(path: str):
-        print("loading image...")
+    def load_image(config: Config, path: str):
+        if config.get('general', 'verbose_mode'):
+            print("loading image...")
         img = Image.open(path)
-        print("converting to RGB...")
+        if config.get('general', 'verbose_mode'):
+            print("converting to RGB...")
         img = img.convert('RGB')
-        print("getting pixel access...")
+        if config.get('general', 'verbose_mode'):
+            print("getting pixel access...")
         pixels = img.load()
-        print(f"Image loaded: {img.width}x{img.height}")
+        if config.get('general', 'verbose_mode'):
+            print(f"Image loaded: {img.width}x{img.height}")
+        if config.get('general', 'show_decode_preview'):
+            if config.get('general', 'verbose_mode'):
+                print("displaying image to decode...")
+            img.show()
         return img, pixels
