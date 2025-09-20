@@ -8,22 +8,29 @@ def main() -> int:
     config = Config("config.json")
     
     # Write initial splash menu
-    print("//==============================\\")
-    print("Welcome to the Steganography Tool!")
+    print("")
     print("//==============================\\")
     print("")
-    print("Choose an option:")
-    print("1. Encode a message into an image")
-    print("2. Decode a message from an image")
+    print("Welcome to the Steganography Tool!")
+    print("")
+    print("This tool allows you to encode messages into images and decode messages from images.")
+    print("")
+    print("Please choose an option:")
+    print(".    1. Encode a message into an image")
+    print(".    2. Decode a message from an image")
     choice = input("Enter 1 or 2: ").strip()
+    print("")
 
     if choice == '1':
-        print("Choice 1")
+        if config.get('general', 'show_encoded_preview'):
+            print("")
+            print("Choice 1: Encode a message")
         # Input and validate original file
         images_dir = Path(__file__).parent / "images"
         images_dir.mkdir(parents=True, exist_ok=True)
 
         # ask for filename only (e.g. "A.png"); allow full path too
+        
         fname = input("Enter image filename (e.g. A.png) or full path: ").strip()
         if not fname:
             print("No filename provided.")

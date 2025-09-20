@@ -2,17 +2,24 @@ from PIL import Image
 from config import Config
 
 class Encoder:
-    """
-    Simple encoder class: responsible for embedding a message into an image.
-    Implementation detail (e.g. LSB) goes into encode().
-    """
 
     def __init__(self, input_path: str, config: Config):
         self.input_path = input_path
         self.config = config
 
+    # Encodes a message into the image and saves to output_path
     def encode(self, message: str, output_path: str) -> None:
-        binary_output = self.text_to_binary(message + '\0')
+        
+        # Add delimiter to message
+        delimiter_type = self.config.get('embedding', 'delimiter_type')
+        if delimiter_type == 'null_terminator':
+            binary_output = self.text_to_binary(message + '\0')
+        elif delimiter_type == 'magic_sequence':
+            magic_seq = self.config.get('embedding', 'magic_sequence', '1111111100000000')
+            binary_output = self.text_to_binary(message + magic_seq)
+        else:
+            length_prefix = len(message)
+            binary_output = self.text_to_binary(f"{length_prefix:04d}" + message)
         binary_length = len(binary_output)
 
         img, pixels = self.load_image(self.config, self.input_path)
@@ -31,16 +38,20 @@ class Encoder:
         # Load and display modified image
         if self.config.get('general', 'show_encoded_preview'):
             modified_img = Image.open(output_path)
-            print("displaying modified image...")
+            if self.config.get('general', 'verbose_mode'):
+                print("Displaying modified image...")
             modified_img.show()
 
         # Print summary of encoding process
+        print("")
         print("//==============================\\")
         print("ENCODING SUMMARY")
         print(binary_output)
         print(f"Length of binary message: {binary_length} bits")
         print("//==============================\\")
-    
+        print("")
+        print("")
+
     def embed_message(self, img: Image, pixels, binary_output: str) -> None:
         bit_index = 0
         total_bits = len(binary_output)
@@ -74,14 +85,19 @@ class Encoder:
 
     @staticmethod
     def load_image(config: Config, path: str):
-        print("loading image...")
+        if config.get('general', 'verbose_mode'):
+            print("loading image...")
         img = Image.open(path)
         if config.get('general', 'show_original_preview'):
-            print("displaying original image...")
+            if config.get('general', 'verbose_mode'):
+                print("displaying original image...")
             img.show()
-        print("converting to RGB...")
+        if config.get('general', 'verbose_mode'):
+            print("converting to RGB...")
         img = img.convert('RGB')
-        print("getting pixel access...")
+        if config.get('general', 'verbose_mode'):
+            print("getting pixel access...")
         pixels = img.load()
-        print(f"Image loaded: {img.width}x{img.height}")
+        if config.get('general', 'verbose_mode'):
+            print(f"Image loaded: {img.width}x{img.height}")
         return img, pixels
