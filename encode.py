@@ -1,5 +1,7 @@
 from PIL import Image
 from config import Config
+import json
+from pathlib import Path
 
 class Encoder:
 
@@ -8,7 +10,7 @@ class Encoder:
         self.config = config
 
     # Encodes a message into the image and saves to output_path
-    def encode(self, message: str, output_path: str) -> None:
+    def encode(self, message: str, output_path: str, metadata_path: str) -> None:
         
         # Add delimiter to message
         delimiter_type = self.config.get('embedding', 'delimiter_type')
@@ -43,6 +45,10 @@ class Encoder:
             if self.config.get('general', 'verbose_mode'):
                 print("Displaying modified image...")
             modified_img.show()
+
+        # Save metadata
+        if self.config.get('embedding', 'write_metadata'):
+            self.meta(self.config, metadata_path)
 
         # Print summary of encoding process
         print("")
@@ -103,3 +109,22 @@ class Encoder:
         if config.get('general', 'verbose_mode'):
             print(f"Image loaded: {img.width}x{img.height}")
         return img, pixels
+    
+    @staticmethod
+    def meta(config: Config, path: str) -> None:
+        metadata = {
+            "delimiter_type": config.get('embedding', 'delimiter_type'),
+            "magic_sequence": config.get('embedding', 'magic_sequence'),
+            "channels_to_use": config.get('embedding', 'channels_to_use'),
+            "bits_per_channel": config.get('embedding', 'bits_per_channel')
+        }
+
+        try:
+            #if path.exists():
+
+            with path.open('w') as wf:
+                json.dump(metadata, wf, indent=4)
+            if config.get('general', 'verbose_mode'):
+                print(f"Metadata written to {path}")
+        except Exception as e:
+            print(f"Failed to write metadata to {path}: {e}")
