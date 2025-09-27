@@ -19,8 +19,7 @@
         "bits_per_channel": 1,
         "embedding_pattern": "sequential",
         "skip_pixels": 0,
-        "capacity_warning_threshold": 80,
-        "write_metadata": true
+        "capacity_warning_threshold": 80
     },
     "!!!security": {
         "encryption_enabled": false,
