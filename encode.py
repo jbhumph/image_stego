@@ -1,5 +1,6 @@
 from PIL import Image
 from config import Config
+from datetime import datetime
 
 class Encoder:
 
@@ -8,7 +9,7 @@ class Encoder:
         self.config = config
 
     # Encodes a message into the image and saves new image to output_path
-    def encode(self, message: str, output_path: str, metadata_path: str) -> None:
+    def encode(self, message: str, output_path: str, summary_path: str) -> None:
         
         # Add delimiter to message
         delimiter_type = self.config.get('embedding', 'delimiter_type')
@@ -45,6 +46,9 @@ class Encoder:
                 print("Displaying modified image...")
             modified_img.show()
 
+        # Write summary of encoding process
+        self.write_summary(summary_path, message, binary_output, output_path)
+
         # Print summary of encoding process
         ## TO DO: Create method with more detail to be called here
         print("")
@@ -80,7 +84,36 @@ class Encoder:
 
                 pixels[x, y] = tuple(channels)
 
-            
+
+    def write_summary(self, summary_path: str, message: str, binary_output: str, output_path: str) -> None:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        lines = [
+            "==========================================================================================",
+            "",
+            "ENCODING SUMMARY",
+            f"Timestamp: {timestamp}",
+            "",
+            f"Original input: {self.input_path}",
+            f"Output file: {output_path}",
+            "",
+            f"Delimiter: {self.config.get('embedding', 'delimiter_type')}",
+            f"Bits embedded: {len(binary_output)}",
+            f"Message length (chars): {len(message)}",
+            f"Channels used: {self.config.get('embedding', 'channels_to_use')}",
+            f"Bits per channel: {self.config.get('embedding', 'bits_per_channel')}",
+            f"Magic sequence (if used): {self.config.get('embedding', 'magic_sequence')}",
+            "",
+            f"Encoded message: {message}",
+            "",
+            "==========================================================================================",
+            "",
+        ]
+
+        # Append to existing summary.txt (so multiple encodes are recorded)
+        with summary_path.open("a", encoding="utf-8") as f:
+            f.write("\n".join(lines) + "\n")
+
 
     @staticmethod
     # Convert text to binary string

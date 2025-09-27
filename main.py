@@ -38,14 +38,14 @@ def main() -> int:
             print("No output path provided.")
             return 1
         
-        # Set path for output image and metadata
+        # Set path for output image and summary
         output_path = images_dir / outname
-        metadata_path = images_dir / "metadata.json"
+        summary_path = images_dir / "summary.txt"
         encoder = Encoder(input_path, config)
         
         # Perform encoding
         try:
-            encoder.encode(message, output_path, metadata_path)
+            encoder.encode(message, output_path, summary_path)
         except Exception as e:
             print(f"Error during encoding: {e}")
             return 1
