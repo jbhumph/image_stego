@@ -1,6 +1,7 @@
 from PIL import Image
 from config import Config
 from datetime import datetime
+from encrypt import password_to_key, encrypt_message
 
 class Encoder:
 
@@ -10,6 +11,16 @@ class Encoder:
 
     # Encodes a message into the image and saves new image to output_path
     def encode(self, message: str, output_path: str, summary_path: str) -> None:
+        
+        # Encrypt message if enabled
+        unencrypted_message = message
+        if self.config.get('encryption', 'encryption_enabled'):
+            password = input("Enter password for encryption: ").strip()
+            if not password:
+                raise ValueError("No password provided for encryption.")
+            message = encrypt_message(message, password).decode()
+            if self.config.get('general', 'verbose_mode'):
+                print("Message encrypted.")
         
         # Add delimiter to message
         delimiter_type = self.config.get('embedding', 'delimiter_type')
@@ -49,7 +60,7 @@ class Encoder:
             modified_img.show()
 
         # Write summary of encoding process
-        self.write_summary(summary_path, message, binary_output, output_path)
+        self.write_summary(summary_path, unencrypted_message, message, binary_output, output_path)
 
         # Print summary of encoding process
         ## TO DO: Create method with more detail to be called here
@@ -87,7 +98,7 @@ class Encoder:
                 pixels[x, y] = tuple(channels)
 
 
-    def write_summary(self, summary_path: str, message: str, binary_output: str, output_path: str) -> None:
+    def write_summary(self, summary_path: str, message: str, encrypted: str, binary_output: str, output_path: str) -> None:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         lines = [
@@ -99,18 +110,35 @@ class Encoder:
             f"Original input: {self.input_path}",
             f"Output file: {output_path}",
             "",
-            f"Delimiter: {self.config.get('embedding', 'delimiter_type')}",
             f"Bits embedded: {len(binary_output)}",
             f"Message length (chars): {len(message)}",
             f"Channels used: {self.config.get('embedding', 'channels_to_use')}",
             f"Bits per channel: {self.config.get('embedding', 'bits_per_channel')}",
-            f"Magic sequence (if used): {self.config.get('embedding', 'magic_sequence')}",
-            "",
-            f"Encoded message: {message}",
-            "",
-            "==========================================================================================",
-            "",
+            f"Delimiter: {self.config.get('embedding', 'delimiter_type')}"
         ]
+
+        # Add magic sequence if applicable
+        if self.config.get('embedding', 'delimiter_type') == 'magic_sequence':
+            lines.append(f"Magic sequence: {self.config.get('embedding', 'magic_sequence')}")
+        lines.append("")
+        # Add encryption details if applicable
+        if self.config.get('encryption', 'encryption_enabled'):
+            lines.append(f"Encryption: Enabled")
+            lines.append(f"Encryption algorithm: {self.config.get('encryption', 'encryption_algorithm')}")
+            lines.append(f"Password hash algorithm: {self.config.get('encryption', 'password_hash_algorithm')}")
+        lines.append("")
+        # Add original message if applicable
+        if self.config.get('embedding', 'summary_original_message'):
+            lines.append(f"Original message: {message}")
+        lines.append("")
+        # Add encrypted message if applicable
+        if self.config.get('embedding', 'summary_encrypted_message') and self.config.get('encryption', 'encryption_enabled'):
+            lines.append(f"Encrypted message: {encrypted}")
+        # Footer
+        lines.append("")
+        lines.append("==========================================================================================")
+        lines.append("")
+
 
         # Append to existing summary.txt (so multiple encodes are recorded)
         with summary_path.open("a", encoding="utf-8") as f:

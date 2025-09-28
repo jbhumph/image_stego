@@ -9,7 +9,7 @@
         "show_summary": true
     },
     "embedding": {
-        "delimiter_type": "null_terminator",
+        "delimiter_type": "magic_sequence",
         "magic_sequence": "1111111100000000",
         "channels_to_use": [
             "R",
@@ -19,10 +19,12 @@
         "bits_per_channel": 1,
         "embedding_pattern": "sequential",
         "skip_pixels": 0,
-        "capacity_warning_threshold": 80
+        "capacity_warning_threshold": 80,
+        "summary_original_message": true,
+        "summary_encrypted_message": true
     },
     "decoding": {
-        "delimiter_type": "null_terminator",
+        "delimiter_type": "magic_sequence",
         "length": 8,
         "magic_sequence": "1111111100000000",
         "channels_to_use": [
@@ -34,8 +36,9 @@
         "embedding_pattern": "sequential",
         "skip_pixels": 0
     },
-    "!!!security": {
-        "encryption_enabled": false,
+    "encryption": {
+        "encryption_enabled": true,
+        "decryption_enabled": true,
         "encryption_algorithm": "AES",
         "password_hash_algorithm": "SHA256"
     },

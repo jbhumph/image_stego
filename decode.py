@@ -1,6 +1,7 @@
 from PIL import Image
 from config import Config
 from datetime import datetime
+from encrypt import decrypt_message
 
 class Decoder:
 
@@ -55,6 +56,15 @@ class Decoder:
             message += chr(code)
         binary_output = len(message) * 8
 
+        # Decrypt message if enabled
+        if self.config.get('encryption', 'decryption_enabled'):
+            password = input("Enter password for decryption: ").strip()
+            if not password:
+                raise ValueError("No password provided for decryption.")
+            message = decrypt_message(message, password)
+            if self.config.get('general', 'verbose_mode'):
+                print("Message decrypted.")
+
         self.write_summary(summary_path, binary_output, message)
 
         return message
@@ -71,18 +81,29 @@ class Decoder:
             "",
             f"Image path: {self.input_path}",
             "",
-            f"Delimiter: {self.config.get('embedding', 'delimiter_type')}",
             f"Bits embedded: {binary_output}",
             f"Message length (chars): {len(message)}",
             f"Channels used: {self.config.get('embedding', 'channels_to_use')}",
             f"Bits per channel: {self.config.get('embedding', 'bits_per_channel')}",
-            f"Magic sequence (if used): {self.config.get('embedding', 'magic_sequence')}",
-            "",
-            f"Encoded message: {message}",
-            "",
-            "==========================================================================================",
-            "",
+            f"Delimiter: {self.config.get('embedding', 'delimiter_type')}",
         ]
+
+        # Add magic sequence if applicable
+        if self.config.get('decoding', 'delimiter_type') == 'magic_sequence':
+            lines.append(f"Magic sequence: {self.config.get('decoding', 'magic_sequence')}")
+        lines.append("")
+        # Add decryption details if applicable
+        if self.config.get('encryption', 'decryption_enabled'):
+            lines.append(f"Decryption: Enabled")
+            lines.append(f"Decryption algorithm: {self.config.get('encryption', 'encryption_algorithm')}")
+            lines.append(f"Password hash algorithm: {self.config.get('encryption', 'password_hash_algorithm')}")
+            lines.append("")
+        lines.append("")
+        lines.append(f"Encoded message: {message}")
+        lines.append("")
+        lines.append("==========================================================================================")
+        lines.append("")
+
 
         # Append to existing summary.txt (so multiple decodes are recorded)
         with summary_path.open("a", encoding="utf-8") as f:
