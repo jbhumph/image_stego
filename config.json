@@ -21,6 +21,19 @@
         "skip_pixels": 0,
         "capacity_warning_threshold": 80
     },
+    "decoding": {
+        "delimiter_type": "null_terminator",
+        "length": 8,
+        "magic_sequence": "1111111100000000",
+        "channels_to_use": [
+            "R",
+            "G",
+            "B"
+        ],
+        "bits_per_channel": 1,
+        "embedding_pattern": "sequential",
+        "skip_pixels": 0
+    },
     "!!!security": {
         "encryption_enabled": false,
         "encryption_algorithm": "AES",

@@ -22,7 +22,7 @@ class Encoder:
             binary_output = self.text_to_binary(message)
         else:
             length_prefix = len(message)
-            binary_output = self.text_to_binary(f"{length_prefix:04d}" + message)
+            binary_output = self.text_to_binary(f"{length_prefix:08d}" + message)
         binary_length = len(binary_output)
 
         # Load image and get pixel access
@@ -31,6 +31,8 @@ class Encoder:
         # Check if image is large enough for message
         if binary_length > img.width * img.height * 3:
             raise ValueError("Message is too long to encode in the provided image.")
+        if self.config.get('encoding', 'length_prefix') and binary_length + 8 > img.width * img.height * 3:
+            raise ValueError("Message with length prefix is too long to encode in the provided image.")
         
         # Embed message in image
         self.embed_message(img, pixels, binary_output)
