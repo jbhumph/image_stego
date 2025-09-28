@@ -7,9 +7,10 @@ from config import Config
 def main() -> int:
     config = Config("config.json")
 
-    # Create filepath for images directory
+    # Create filepath for images directory and summary file
     images_dir = Path(__file__).parent / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
+    summary_path = images_dir / "summary.txt"
 
     # Print menu and get user choice
     choice = print_menu()
@@ -38,12 +39,11 @@ def main() -> int:
             print("No output path provided.")
             return 1
         
-        # Set path for output image and summary
+        # Set path for output image
         output_path = images_dir / outname
-        summary_path = images_dir / "summary.txt"
-        encoder = Encoder(input_path, config)
         
         # Perform encoding
+        encoder = Encoder(input_path, config)
         try:
             encoder.encode(message, output_path, summary_path)
         except Exception as e:
@@ -67,12 +67,10 @@ def main() -> int:
         if not input_path:
             return 1
         
+        # Perform decoding
         decoder = Decoder(input_path, config)
-        
         try:
-            message = decoder.decode()
-            print("Decoded message:")
-            print(message)
+            message = decoder.decode(summary_path)
         except Exception as e:
             print(f"Error during decoding: {e}")
             return 1

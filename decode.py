@@ -1,15 +1,15 @@
 from PIL import Image
 from config import Config
+from datetime import datetime
 
 class Decoder:
-    """
-    Simple decoder class: responsible for extracting a message from an image.
-    """
+
     def __init__(self, input_path: str, config: Config):
         self.input_path = input_path
         self.config = config
 
-    def decode(self) -> str:
+    # Decodes and returns the hidden message from the image
+    def decode(self, summary_path: str) -> str:
         img, pixels = self.load_image(self.config, self.input_path)
 
         extracted_bits = []
@@ -33,7 +33,38 @@ class Decoder:
                 break
             message += chr(code)
 
+        self.write_summary(summary_path, binary_str, message)
+
         return message
+    
+
+    def write_summary(self, summary_path: str, binary_output: str, message: str) -> None:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        lines = [
+            "==========================================================================================",
+            "",
+            "DECODING SUMMARY",
+            f"Timestamp: {timestamp}",
+            "",
+            f"Image path: {self.input_path}",
+            "",
+            f"Delimiter: {self.config.get('embedding', 'delimiter_type')}",
+            f"Bits embedded: {len(binary_output)}",
+            f"Message length (chars): {len(message)}",
+            f"Channels used: {self.config.get('embedding', 'channels_to_use')}",
+            f"Bits per channel: {self.config.get('embedding', 'bits_per_channel')}",
+            f"Magic sequence (if used): {self.config.get('embedding', 'magic_sequence')}",
+            "",
+            f"Encoded message: {message}",
+            "",
+            "==========================================================================================",
+            "",
+        ]
+
+        # Append to existing summary.txt (so multiple decodes are recorded)
+        with summary_path.open("a", encoding="utf-8") as f:
+            f.write("\n".join(lines) + "\n")
 
     
     @staticmethod
