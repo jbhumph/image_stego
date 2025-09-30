@@ -1,6 +1,7 @@
 {
     "general": {
         "verbose_mode": true,
+        "print_title": true,
         "show_original_preview": true,
         "show_encoded_preview": true,
         "show_decode_preview": false,

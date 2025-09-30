@@ -14,6 +14,10 @@ def main() -> int:
     temp_dir.mkdir(parents=True, exist_ok=True)
     summary_path = temp_dir / "summary.txt"
 
+    # Print title if enabled in config
+    if config.get('general', 'print_title'):
+        print_title()
+    
     # Print menu and get user choice
     choice = print_menu()
     
@@ -104,11 +108,14 @@ def import_txt(txt_path: str, temp_dir: Path) -> str:
 def print_menu() -> int:    
     # Write initial splash menu
     print("")
-    print("//==============================\\")
+    print("===================================================================================")
     print("")
     print("Welcome to the Steganography Tool!")
     print("")
     print("This tool allows you to encode messages into images and decode messages from images.")
+    print("See README for instructions and config.json for settings.")
+    print("")
+    print("===================================================================================")
     print("")
     print("Please choose an option:")
     print(".    1. Encode a message into an image")
@@ -130,6 +137,20 @@ def test_path(fname: str, images_dir: Path):
         print(f"Input image not found: {input_path}")
         return None
     return input_path
+
+def print_title():
+    # Shaded Blocky
+    # https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type+Something+&x=none&v=4&h=4&w=80&we=false
+    print("")
+    print("░░      ░░░        ░░        ░░░      ░░░░      ░░░░░░       ░░░░      ░░░  ░░░░░░░")
+    print("▒  ▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒  ▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒  ▒▒▒▒  ▒▒▒▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒▒▒▒")
+    print("▓▓      ▓▓▓▓▓▓  ▓▓▓▓▓      ▓▓▓▓  ▓▓▓   ▓▓  ▓▓▓▓  ▓▓ ▓▓       ▓▓▓  ▓▓▓▓  ▓▓  ▓▓▓▓▓▓▓")
+    print("███████  █████  █████  ████████  ████  ██        █████  ████████        ██  ███████")
+    print("██      ██████  █████        ███      ███  ████  █████  ████████  ████  ██        █")
+    print("")
+    print("VERSION: 1.0.0")
+    print("BY: John Humphrey")
+    print("GITHUB: https://github.com/jbhumph/image_stego")
 
 if __name__ == "__main__":
     raise SystemExit(main())
