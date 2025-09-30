@@ -1,8 +1,8 @@
 {
     "general": {
         "verbose_mode": true,
-        "show_original_preview": false,
-        "show_encoded_preview": false,
+        "show_original_preview": true,
+        "show_encoded_preview": true,
         "show_decode_preview": false,
         "!!!auto_backup": false,
         "!!!preserve_metadata": false,
@@ -22,7 +22,7 @@
         "skip_pixels": 0,
         "capacity_warning_threshold": 80,
         "summary_original_message": true,
-        "summary_encrypted_message": true
+        "summary_encrypted_message": false
     },
     "decoding": {
         "delimiter_type": "null_terminator",
