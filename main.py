@@ -35,7 +35,19 @@ def main() -> int:
             return 1
 
         # Ask for message and output path
-        message = input("Enter the message to encode: ").strip()
+        if config.get('general', 'import_message_from_txt'):
+            txt_path = input("Enter path to text file with message: ").strip()
+            if not txt_path:
+                print("No text file path provided.")
+                return 1
+            try:
+                message = import_txt(txt_path, temp_dir)
+            except Exception as e:
+                print(f"Error reading text file: {e}")
+                return 1
+        else:
+            message = input("Enter the message to encode: ").strip()
+
         outname = input("Enter the path to save the output image: ").strip()
         if not outname:
             print("No output path provided.")
@@ -76,6 +88,17 @@ def main() -> int:
         except Exception as e:
             print(f"Error during decoding: {e}")
             return 1
+        
+
+def import_txt(txt_path: str, temp_dir: Path) -> str:
+        # Import message from text file
+        if Path(txt_path).is_absolute() or ("/" in txt_path or "\\" in txt_path):
+            input_path = Path(txt_path)
+        else:
+            input_path = temp_dir / txt_path
+        with open(input_path, 'r', encoding='utf-8') as f:
+            message = f.read()
+        return message
 
 
 def print_menu() -> int:    

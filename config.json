@@ -6,7 +6,8 @@
         "show_decode_preview": false,
         "!!!auto_backup": false,
         "!!!preserve_metadata": false,
-        "show_summary": true
+        "show_summary": true,
+        "import_message_from_txt": true
     },
     "embedding": {
         "delimiter_type": "null_terminator",
