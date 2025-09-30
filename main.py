@@ -7,10 +7,12 @@ from config import Config
 def main() -> int:
     config = Config("config.json")
 
-    # Create filepath for images directory and summary file
+    # Create filepath for images directory and temp directory and summary file
     images_dir = Path(__file__).parent / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
-    summary_path = images_dir / "summary.txt"
+    temp_dir = Path(__file__).parent / "temp"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    summary_path = temp_dir / "summary.txt"
 
     # Print menu and get user choice
     choice = print_menu()

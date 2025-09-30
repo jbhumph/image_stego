@@ -9,7 +9,7 @@
         "show_summary": true
     },
     "embedding": {
-        "delimiter_type": "magic_sequence",
+        "delimiter_type": "null_terminator",
         "magic_sequence": "1111111100000000",
         "channels_to_use": [
             "R",
@@ -24,7 +24,7 @@
         "summary_encrypted_message": true
     },
     "decoding": {
-        "delimiter_type": "magic_sequence",
+        "delimiter_type": "null_terminator",
         "length": 8,
         "magic_sequence": "1111111100000000",
         "channels_to_use": [
