@@ -2,10 +2,25 @@
 An experiment in image steganogrophy
 
 ## About
+This program allows the user to hide a message inside of an image and then later allows the user to reveal the hidden message. The message may optionally be encrypted using AES. This can be useful across a variety of applications. I hope to grow this project to include additional methods of embedding and encryption.
 
 
 ## Contents
+- [About](#about)
+- [Author](#author)
+- [Info](#info)
+- [Usage Instructions](#usage-instructions)
+- [Attribution](#attribution)
+- [Usage Examples](#usage-examples)
+- [Version Info](#version-info)
 
+
+
+## Author
+Created by: John Humphrey<br>
+GitHub: https://github.com/jbhumph/image_stego<br>
+<br>
+This project was created during my 2025 college summer break in order to further explore areas of personal interest including steganography, encryption, pixel and bit manipulation, as well as general application development.
 
 ## Info
 
