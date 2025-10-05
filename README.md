@@ -23,7 +23,52 @@ GitHub: https://github.com/jbhumph/image_stego<br>
 This project was created during my 2025 college summer break in order to further explore areas of personal interest including steganography, encryption, pixel and bit manipulation, as well as general application development.
 
 ## Info
+Steganography is the concealment of a message so that it is not known to be what it is.
 
+This program explores some basic aspects of image steganography. It allows the user to embed a text or message within an image file. Due to the nature of some image formats, only a select few will work with this program. 
+
+Stega-Pal at this point explores some rudimentary methods for embedding text into an image. The basic concept works as such: The program takes a message and converts it from a string of its text to a string of the binary bits that make up its ASCII characters. Each character, number, whitespace, etc is made up of one byte or 8 bits represented by a 1 or 0. Inside an image file such as a .PNG, the image file itself is represented by an array of pixels, each of which contains data for red, green, and blue. These primary colors are each represented as 8 bits, which provide 256 different shades of that primary color. Within each byte, the bit furthest to the right is referred to as the "least significant bit" as it has the least effect on the entire color, affecting its value by one. At it's basic settings, the program will start at the beginning of the binary string and put that value in the red channel of pixel 1, replacing it's least significant bit. We then move to the next bit in the string and the blue channel of pixel 1, and on and on.
+
+For example, we may have the following string representing "abc":
+```
+{ 01100001 01100010 01100011 }
+```
+with our first couple pixels represented as:
+
+```
+{ 10010111 01111011 11110110 10010111 01111011 11110110}
+
+or 
+
+PIXEL 1
+RED: 		10010111
+GREEN:		01111011
+BLUE:		11110110
+
+PIXEL 2
+RED: 		10010111
+GREEN:		01111011
+BLUE:		11110110
+
+```
+Then, after moving through our chain, our first two pixels would look like this:
+
+```
+{ 10010110 01111011 11110111 10010110 01111010 11110110}
+
+or 
+
+PIXEL 1
+RED: 		10010110
+GREEN:		01111011
+BLUE:		11110111
+
+PIXEL 2
+RED: 		10010110
+GREEN:		01111010
+BLUE:		11110110
+```
+As you can see, the difference is rather minimal and generally one that the human eye cannot detect. Sometimes a bit is changed and sometimes it is not. The program will later go on to allow to change the 2 least insignificant bits or only specific color channels. This results in a file of the exact size as the original.
 
 ## Usage Instructions
 
