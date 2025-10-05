@@ -76,6 +76,12 @@ Original Image:
 Image containing Shakespeare's Macbeth in it's entirety:
 ![alt text](docs/b.png)
 
+The user is able to encrypt the original message. Currently, the program only has support for AES encryption utilizing SHA-256 as a password hash algorithm. It is also recommended that the user use some type of delimiter so that the recipient of the image is able to know when the message ends. At the moment we have three options. A prefix with a message length, a null delimiter, or a magic-sequence delimiter.
+
+Once the altered image has been passed on to its recipient, the process is essentially reversed. The least significant bits are scanned and reassembled into a string of ASCII characters. At this point the message may be de-encrypted.
+
+All encoding and decoding operations output metadata to a summary.txt file whose options may be found in the config file. This could be saved for future use or safely sent to the recipient for decoding purposes.
+
 ## Usage Instructions
 
 <br>
