@@ -23,7 +23,7 @@ GitHub: https://github.com/jbhumph/image_stego<br>
 This project was created during my 2025 college summer break in order to further explore areas of personal interest including steganography, encryption, pixel and bit manipulation, as well as general application development.
 
 ## Info
-Steganography is the concealment of a message so that it is not known to be what it is.
+Steganography is the practice of concealing messages or information within other non-secret data, deriving its name from the Greek words for "covered writing." While cryptography scrambles data to make it unreadable, steganography hides the very existence of the communication itself, a technique with roots stretching back to ancient Greece where messages were hidden on wooden tablets beneath wax or tattooed on messengers' scalps. Throughout history, steganography has evolved from invisible inks and microdots to sophisticated digital methods used in modern computing and security applications. Image steganography specifically involves embedding hidden data within digital image files by subtly modifying pixel values in ways imperceptible to the human eye.
 
 This program explores some basic aspects of image steganography. It allows the user to embed a text or message within an image file. Due to the nature of some image formats, only a select few will work with this program. 
 
@@ -69,6 +69,12 @@ GREEN:		01111010
 BLUE:		11110110
 ```
 As you can see, the difference is rather minimal and generally one that the human eye cannot detect. Sometimes a bit is changed and sometimes it is not. The program will later go on to allow to change the 2 least insignificant bits or only specific color channels. This results in a file of the exact size as the original.
+
+Original Image:
+![alt text](docs/a.png)
+
+Image containing Shakespeare's Macbeth in it's entirety:
+![alt text](docs/b.png)
 
 ## Usage Instructions
 

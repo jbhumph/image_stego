@@ -39,8 +39,8 @@
         "skip_pixels": 0
     },
     "encryption": {
-        "encryption_enabled": true,
-        "decryption_enabled": true,
+        "encryption_enabled": false,
+        "decryption_enabled": false,
         "encryption_algorithm": "AES",
         "password_hash_algorithm": "SHA256"
     },
